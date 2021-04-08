@@ -6,7 +6,7 @@
 
 1. Open terminal (or command prompt if you use windows).
 2. Go to the folder where you saved the jar file.
-3. Type ```java -jar ThePeriodicTable.jar``` and hit enter key.
+3. Type ```java -jar periodicTable.jar``` and hit enter key.
 
 ### Clicking On Elements
 
