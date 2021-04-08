@@ -1,14 +1,14 @@
 # The Periodic Table
 
-##How To Use
+## How To Use
 
-####Opening the app
+#### Opening the app
 
 1. Open terminal (or command prompt if you use windows).
 2. Go to the folder where you saved the jar file.
 3. Type java -jar ThePeriodicTable.jar and hit enter key.
 
-####Clicking On Elements
+#### Clicking On Elements
 
 Clicking on elements makes a new window opens with the respective element's information.
 
@@ -16,7 +16,7 @@ Clicking on elements makes a new window opens with the respective element's info
 
 ![](Screenshots/ElementWindow.png)
 
-####Searching For Elements
+#### Searching For Elements
 
 1) Type in the element's name or element's symbol or element's atomic number or element's mass number in the search bar.
 
