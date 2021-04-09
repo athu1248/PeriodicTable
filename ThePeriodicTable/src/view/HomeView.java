@@ -1,4 +1,4 @@
-package Views;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,8 +31,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import controller.ElementFinder;
+import model.Element;
 
-public class homeView implements ActionListener {
+public class HomeView implements ActionListener {
 
 	private static JFrame frame = new JFrame();
 	private static JPanel headingPanel = new JPanel();
@@ -44,7 +45,7 @@ public class homeView implements ActionListener {
 	private static JComboBox<String> comboBox = new JComboBox<String>();
 	private static JTextField txtSearch = new JTextField();
 	
-	private static ArrayList<String> matchList = new ArrayList<String>();
+	private static ArrayList<Element> matchList = new ArrayList<Element>();
 	
 	
 	private static List<Integer> cyan = new ArrayList<Integer>();
@@ -127,9 +128,8 @@ public class homeView implements ActionListener {
 				matchList = ElementFinder.getSearchInfo(key);
 				comboBox.removeAllItems();
 				comboBox.addItem("Name  " + "  Symbol  " + "  A.No.  " + "  M.No.");
-				for (String i : matchList) {
-					String[] parts = i.split(", ");
-					comboBox.addItem(parts[0] +"   "+ parts[1] +"   "+ parts[2] +"   "+ parts[3]);
+				for (Element element : matchList) {
+					comboBox.addItem(element.getName() +"   "+ element.getSymbol() +"   "+ element.getAtmNo() +"   "+ element.getMassNo());
 				}
 			}
 		
@@ -147,9 +147,10 @@ public class homeView implements ActionListener {
 				
 				if (e.getStateChange()==ItemEvent.SELECTED) {
 					if (a != 0) {
-						String[] click_parts = matchList.get(a-1).split(", ");
-						String[] click_result = ElementFinder.getElementInfo(click_parts[1]);
-						elementView.elementPage(click_result[0], click_result[1], click_result[2], click_result[3], click_result[4], click_result[5]);
+						String click_string = (String) comboBox.getSelectedItem();
+						String[] click_parts = click_string.split("   ");
+						Element click_element = ElementFinder.getElement(click_parts[1]);
+						ElementView.elementPage(click_element);
 					}
 				}
 			}
@@ -368,15 +369,15 @@ public class homeView implements ActionListener {
 		pnl.add(a);
 		color(a, j);
 		a.setActionCommand(symbol.get(j-1));
-		a.addActionListener(new homeView());
+		a.addActionListener(new HomeView());
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		String action_symbol = e.getActionCommand();
-		String[] element_Result = ElementFinder.getElementInfo(action_symbol);
-		elementView.elementPage(element_Result[0], element_Result[1], element_Result[2], element_Result[3], element_Result[4], element_Result[5]);
+		Element element_Result = ElementFinder.getElement(action_symbol);
+		ElementView.elementPage(element_Result);
 
 	}
 

@@ -1,4 +1,4 @@
-import Views.*;
+import view.*;
 /**
  * 
  * @author Atharva
@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		homeView home = new homeView();
+		HomeView home = new HomeView();
 		
 		home.newHomePage();
 		

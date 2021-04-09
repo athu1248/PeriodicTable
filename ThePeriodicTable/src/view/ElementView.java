@@ -1,4 +1,4 @@
-package Views;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
@@ -11,7 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class elementView {
+import model.Element;
+
+public class ElementView {
 
 	static JFrame frame = new JFrame();
 	static JPanel panel1 = new JPanel();
@@ -44,7 +46,7 @@ public class elementView {
 	 * @param config
 	 * @param fact
 	 */
-	public static void elementPage(String name, String symbol, String atmNo, String massNo, String config, String fact) {
+	public static void elementPage(Element element) {
 
 		// PANEL 1
 		panel1.setLayout(grid1);
@@ -54,10 +56,10 @@ public class elementView {
 		gbc.fill = GridBagConstraints.VERTICAL;
 		lblElement.setPreferredSize(new Dimension(400, 375));
 		Font font1 = new Font("Consolas", Font.BOLD, 100);
-		lblElement.setText(symbol);
+		lblElement.setText(element.getSymbol());
 		lblElement.setFont(font1);
-		homeView h = new homeView();
-		h.color(lblElement, Integer.valueOf(atmNo));
+		HomeView h = new HomeView();
+		h.color(lblElement, element.getAtmNo());
 		panel1.add(lblElement, gbc);
 
 		gbc.gridheight = 1;
@@ -69,7 +71,7 @@ public class elementView {
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		panel1.add(lbl1, gbc);
-		lblName.setText(name);
+		lblName.setText(element.getName());
 		lblName.setPreferredSize(new Dimension(200, 75));
 		gbc.gridx = 2;
 		gbc.gridy = 0;
@@ -78,7 +80,7 @@ public class elementView {
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		panel1.add(lbl2, gbc);
-		lblSymbol.setText(symbol);
+		lblSymbol.setText(element.getSymbol());
 		lblSymbol.setPreferredSize(new Dimension(200, 75));
 		gbc.gridx = 2;
 		gbc.gridy = 1;
@@ -87,7 +89,7 @@ public class elementView {
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		panel1.add(lbl3, gbc);
-		lblatmNo.setText(atmNo);
+		lblatmNo.setText(Integer.toString(element.getAtmNo()));
 		lblatmNo.setPreferredSize(new Dimension(200, 75));
 		gbc.gridx = 2;
 		gbc.gridy = 2;
@@ -96,7 +98,7 @@ public class elementView {
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		panel1.add(lbl4, gbc);
-		lblmassNo.setText(massNo);
+		lblmassNo.setText(Integer.toString(element.getMassNo()));
 		lblmassNo.setPreferredSize(new Dimension(200, 75));
 		gbc.gridx = 2;
 		gbc.gridy = 3;
@@ -105,7 +107,7 @@ public class elementView {
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		panel1.add(lbl5, gbc);
-		lblConfig.setText(config);
+		lblConfig.setText(element.geteConfig());
 		lblConfig.setPreferredSize(new Dimension(200, 75));
 		gbc.gridx = 2;
 		gbc.gridy = 4;
@@ -114,10 +116,10 @@ public class elementView {
 		gbc.gridx = 1;
 		gbc.gridy = 5;
 		panel1.add(lbl6, gbc);
-		if (fact.contentEquals("<html></html>")) {
+		if (element.getFact().contentEquals("<html></html>")) {
 			lblFact.setText("N/A");
 		}else {
-			lblFact.setText(fact);
+			lblFact.setText(element.getFact());
 		}
 		lblFact.setPreferredSize(new Dimension(200, 75));
 		gbc.gridx = 2;

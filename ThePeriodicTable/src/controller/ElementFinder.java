@@ -1,10 +1,11 @@
 package controller;
 
 import java.io.File;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import model.Element;
 
 /**
  * Class to find element details based on the selected element or the search key
@@ -17,7 +18,7 @@ import java.util.Scanner;
 
 public class ElementFinder {
 
-	static ArrayList<String> myList = new ArrayList<String>();
+	// static ArrayList<String> myList = new ArrayList<String>();
 
 	/**
 	 * Returns the information of element clicked on the periodic table page
@@ -25,37 +26,38 @@ public class ElementFinder {
 	 * @param symbol the symbol of element clicked
 	 * @return one element record
 	 */
-	public static String[] getElementInfo(String symbol) {
+	public static Element getElement(String symbol) {
+		Element element = new Element();
 		// "/Applications/PeriodicTable.app/Contents/Resources/elementData.csv"
-		File file1 = new File("elementData.csv");
-		File file2 = new File("elementConf.csv");
-		File file3 = new File("elementFact.csv");
-		String[] result = new String[6];
 		try {
+			File file1 = new File("elementData.csv");
+			File file2 = new File("elementEConf.txt");
+			File file3 = new File("elementFact.txt");
 			Scanner scan1 = new Scanner(file1);
 			Scanner scan2 = new Scanner(file2);
 			Scanner scan3 = new Scanner(file3);
+			
+			String[] dataParts;
+			String conf;
+			String fact;
 
 			while (scan1.hasNext() && scan2.hasNext() && scan3.hasNext()) {
 
-				String data = scan1.nextLine();
-				String conf = scan2.nextLine();
-				String fact = scan3.nextLine();
-				String record = data + ", " + conf + ", " + fact;
-				String[] parts = record.split(", ");
+				dataParts = scan1.nextLine().split(", ");
+				conf = scan2.nextLine();
+				fact = scan3.nextLine();
 
-				if (parts[1].equalsIgnoreCase(symbol)) {
-					result[0] = parts[0];
-					result[1] = parts[1];
-					result[2] = parts[2];
-					result[3] = parts[3];
-					result[4] = conf;
-					result[5] = fact;
+				if (dataParts[1].equalsIgnoreCase(symbol)) {
+					element.setName(dataParts[0]);
+					element.setSymbol(dataParts[1]);
+					element.setAtmNo(Integer.parseInt(dataParts[2]));
+					element.setMassNo(Integer.parseInt(dataParts[3]));
+					element.seteConfig(conf);
+					element.setFact(fact);
 					break;
 				}
 
 			}
-
 			scan1.close();
 			scan2.close();
 			scan3.close();
@@ -63,7 +65,7 @@ public class ElementFinder {
 			e.printStackTrace();
 		}
 
-		return result;
+		return element;
 
 	}
 
@@ -73,28 +75,31 @@ public class ElementFinder {
 	 * @param searchKey the key entered by the user which could be an element's name, symbol, atomic number or mass number
 	 * @return list of elements based on the specified search key
 	 */
-	public static ArrayList<String> getSearchInfo(String searchKey) {
+	public static ArrayList<Element> getSearchInfo(String searchKey) {
 		
-		myList.clear();
-
-		File file1 = new File("elementData.csv");
+		ArrayList<Element> elementList = new ArrayList<Element>();
 
 		try {
+			File file1 = new File("elementData.csv");
 			Scanner scan = new Scanner(file1);
 
-			Boolean bool1 = true;
+			while (scan.hasNext()) {
 
-			while (scan.hasNext() && bool1) {
+				Element element = new Element();
 
 				String record = scan.nextLine();
-				String[] parts = record.split(", ");
+				String[] dataParts = record.split(", ");
 				
 				for (int i=0; i<4; i++) {
-					if (parts[i].toUpperCase().contains(searchKey.toUpperCase())) {
-
-						myList.add(String.valueOf(record));
+					if (dataParts[i].toUpperCase().contains(searchKey.toUpperCase())) {
+						element.setName(dataParts[0]);
+						element.setSymbol(dataParts[1]);
+						element.setAtmNo(Integer.parseInt(dataParts[2]));
+						element.setMassNo(Integer.parseInt(dataParts[3]));
+						elementList.add(element);
+						// To make sure that multiple instances of same element doesn't get added.
+						// Thus once an instance of a particular element is added. We break from that element's for loop
 						break;
-
 					}
 				}
 
@@ -105,8 +110,7 @@ public class ElementFinder {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
-		return myList;
+		return elementList;
 
 	}
 
