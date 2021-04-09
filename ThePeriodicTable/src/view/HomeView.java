@@ -54,7 +54,7 @@ public class HomeView implements ActionListener {
 	 * Create a new home page containing the periodic table.
 	 */
 	public void newHomePage() {
-		
+		// "/Applications/Periodic Table.app/Contents/Resources/elementData.csv"
 		File file = new File("elementData.csv");
 		
 		// Adding the symbols and atomic numbers to their corresponding lists
@@ -135,7 +135,7 @@ public class HomeView implements ActionListener {
 				if (e.getStateChange()==ItemEvent.SELECTED) {
 					if (a != 0) {
 						String click_string = (String) comboBox.getSelectedItem();
-						String[] click_parts = click_string.split("   ");
+						String[] click_parts = click_string.split("\\s+");
 						Element click_element = Controller.getElement(click_parts[1]);
 						ElementView.elementPage(click_element);
 					}

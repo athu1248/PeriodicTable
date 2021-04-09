@@ -46,7 +46,9 @@ public class Controller {
 	 */
 	public static Element getElement(String symbol) {
 		Element element = new Element();
-		// "/Applications/PeriodicTable.app/Contents/Resources/elementData.csv"
+		// "/Applications/Periodic Table.app/Contents/Resources/elementData.csv"
+		// "/Applications/Periodic Table.app/Contents/Resources/elementEConf.txt"
+		// "/Applications/Periodic Table.app/Contents/Resources/elementFact.txt"
 		try {
 			File file1 = new File("elementData.csv");
 			File file2 = new File("elementEConf.txt");
