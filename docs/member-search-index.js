@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"controller","c":"ElementFinder","l":"ElementFinder()"},{"p":"controller","c":"ElementFinder","l":"getElementInfo(String)","url":"getElementInfo-java.lang.String-"},{"p":"controller","c":"ElementFinder","l":"getSearchInfo(String)","url":"getSearchInfo-java.lang.String-"}]

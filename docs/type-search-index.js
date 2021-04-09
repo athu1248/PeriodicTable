@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"controller","l":"ElementFinder"}]
