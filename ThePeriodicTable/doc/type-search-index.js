@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"<Unnamed>","l":"AutoSuggestionsDemo"},{"p":"controller","l":"ElementFinder"},{"p":"Views","l":"elementView"},{"p":"Views","l":"homeView"},{"p":"<Unnamed>","l":"Main"},{"p":"Views","l":"searchView"}]
