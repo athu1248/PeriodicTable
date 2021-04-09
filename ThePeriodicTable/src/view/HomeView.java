@@ -14,14 +14,12 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,7 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import controller.ElementFinder;
+import controller.Controller;
 import model.Element;
 
 public class HomeView implements ActionListener {
@@ -47,37 +45,15 @@ public class HomeView implements ActionListener {
 	
 	private static ArrayList<Element> matchList = new ArrayList<Element>();
 	
-	
-	private static List<Integer> cyan = new ArrayList<Integer>();
-	private static List<Integer> red = new ArrayList<Integer>();
-	private static List<Integer> orange = new ArrayList<Integer>();
-	private static List<Integer> yellow = new ArrayList<Integer>();
-	private static List<Integer> green = new ArrayList<Integer>();
-	private static List<Integer> blue = new ArrayList<Integer>();
-	private static List<Integer> pink = new ArrayList<Integer>();
-	private static List<Integer> magenta = new ArrayList<Integer>();
-	private static List<Integer> lgray = new ArrayList<Integer>();
+	private static ArrayList<String> symbolList = new ArrayList<String>();
+	private static ArrayList<String> atmNumList = new ArrayList<String>();
+
 	
 	/**
-	 * 
+	 * Create a new home page containing the periodic table.
 	 */
 	public void newHomePage() {
 		
-		Collections.addAll(cyan, 1,6,7,8,15,16,34);
-		Collections.addAll(red, 3,11,19,37,55,87);
-		Collections.addAll(orange, 4,12,20,38,56,88);
-		Collections.addAll(yellow, 21,22,23,24,25,26,27,28,29,30,
-				39,40,41,42,43,44,45,46,47,48,72,73,74,75,76,77,78,79,80,
-				104,105,106,107,108,109,110,111,112);
-		Collections.addAll(green, 13,31,49,50,81,82,83,113,114,115,116);
-		Collections.addAll(blue, 5,14,32,33,51,52,84);
-		Collections.addAll(pink, 9,17,35,53,85,117);
-		Collections.addAll(magenta, 2,10,18,36,54,86,118);
-		Collections.addAll(lgray, 57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,
-				89,90,91,92,93,94,95,96,97,98,99,100,101,102,103);
-
-		ArrayList<String> symbolList = new ArrayList<String>();
-		ArrayList<String> atmNumList = new ArrayList<String>();
 		File file = new File("elementData.csv");
 		
 		// Adding the symbols and atomic numbers to their corresponding lists
@@ -124,12 +100,17 @@ public class HomeView implements ActionListener {
 			}
 			
 			public void changeSuggestions(String key) {
-				matchList.clear();
-				matchList = ElementFinder.getSearchInfo(key);
-				comboBox.removeAllItems();
-				comboBox.addItem("Name  " + "  Symbol  " + "  A.No.  " + "  M.No.");
-				for (Element element : matchList) {
-					comboBox.addItem(element.getName() +"   "+ element.getSymbol() +"   "+ element.getAtmNo() +"   "+ element.getMassNo());
+				if (key.contentEquals("")) {
+					matchList.clear();
+					comboBox.removeAllItems();
+				} else {
+					matchList.clear();
+					matchList = Controller.getSearchElements(key);
+					comboBox.removeAllItems();
+					comboBox.addItem("Name  " + "  Symbol  " + "  A.No.  " + "  M.No.");
+					for (Element element : matchList) {
+						comboBox.addItem(element.getName() +"   "+ element.getSymbol() +"   "+ element.getAtmNo() +"   "+ element.getMassNo());
+					}
 				}
 			}
 		
@@ -149,7 +130,7 @@ public class HomeView implements ActionListener {
 					if (a != 0) {
 						String click_string = (String) comboBox.getSelectedItem();
 						String[] click_parts = click_string.split("   ");
-						Element click_element = ElementFinder.getElement(click_parts[1]);
+						Element click_element = Controller.getElement(click_parts[1]);
 						ElementView.elementPage(click_element);
 					}
 				}
@@ -171,14 +152,13 @@ public class HomeView implements ActionListener {
 		// First period
 		for (int i = 0; i < 18; i++) {
 			if (i == 0 || i == 17) {
-				addBtn(bodyPanel, symbolList, j, atmNumList); //  Adding H and He
+				addBtn(bodyPanel, j); //  Adding H and He
 				j++;
 			} else {
 				bodyPanel.add(new JLabel(""));
 			}
 
 		}
-		// System.out.println(j); = 3
 
 		// Second period
 		List<Integer> num = new ArrayList<Integer>(); 
@@ -190,32 +170,29 @@ public class HomeView implements ActionListener {
 			if (num.contains(i)) {
 				bodyPanel.add(new JLabel(""));
 			} else {
-				addBtn(bodyPanel, symbolList, j, atmNumList);
+				addBtn(bodyPanel, j);
 				j++;
 			}
 
 		}
-		// System.out.println(j); = 11
 		
 		// Third period
 		for (int i = 0; i < 18; i++) {
 			if (num.contains(i)) {
 				bodyPanel.add(new JLabel(""));
 			} else {
-				addBtn(bodyPanel, symbolList, j, atmNumList);
+				addBtn(bodyPanel, j);
 				j++;
 			}
 
 		}
-		// System.out.println(j); = 19
 		
 		// Fourth, Fifth period
 		for (int i = 0; i < 36; i++) {
-			addBtn(bodyPanel, symbolList, j, atmNumList);
+			addBtn(bodyPanel, j);
 			j++;
 
 		}
-		// System.out.println(j); = 55
 		
 		// Sixth period
 		int k = 72; // var k for skipping the lanthanoids and continuing with the sixth period
@@ -229,11 +206,11 @@ public class HomeView implements ActionListener {
 			} else {
 				if (j > 56) { // Once j becomes greater than 56, we use k to continue with the sixth period
 					// It does not continue forever as the for loop is set to run only for 18 times
-					addBtn(bodyPanel, symbolList, k, atmNumList);
+					addBtn(bodyPanel, k);
 					k++;
 					// Now k becomes the local incrementing variable for element number
 				} else {
-					addBtn(bodyPanel, symbolList, j, atmNumList);
+					addBtn(bodyPanel, j);
 					j++; // value for j stops incrementing to use again for lanthanoids
 				}
 
@@ -254,11 +231,11 @@ public class HomeView implements ActionListener {
 			} else {
 				if (k > 88) { // Once k becomes greater than 88, we use l to continue with the sixth period
 					// It does not continue forever as the for loop is set to run only for 18 times
-					addBtn(bodyPanel, symbolList, l, atmNumList);
+					addBtn(bodyPanel, l);
 					l++;
 					// Now l becomes the local incrementing variable for element number
 				} else {
-					addBtn(bodyPanel, symbolList, k, atmNumList);
+					addBtn(bodyPanel, k);
 					k++; // value for k stops incrementing to use again for actinoids
 				}
 			}
@@ -276,7 +253,7 @@ public class HomeView implements ActionListener {
 			bodyPanel.add(new JLabel(""));
 		}
 		for (int i = 0; i < 15; i++) {
-			addBtn(bodyPanel, symbolList, j, atmNumList);
+			addBtn(bodyPanel, j);
 			j++;
 		}
 		for (int i = 0; i < 2; i++) {
@@ -288,7 +265,7 @@ public class HomeView implements ActionListener {
 			bodyPanel.add(new JLabel(""));
 		}
 		for (int i = 0; i < 15; i++) {
-			addBtn(bodyPanel, symbolList, k, atmNumList);
+			addBtn(bodyPanel, k);
 			k++;
 		}
 		for (int i = 0; i < 2; i++) {
@@ -310,73 +287,25 @@ public class HomeView implements ActionListener {
 
 	}
 
-	/**
-	 * 
-	 * @param a
-	 * @param i
-	 */
-	protected void color(JComponent a, int i) {
-
-		if (cyan.contains(i)) {
-			a.setOpaque(true);
-			a.setBackground(Color.CYAN);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (red.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.RED);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));	
-		}else if (orange.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.ORANGE);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (yellow.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.YELLOW);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (green.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.GREEN);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (blue.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.BLUE);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (pink.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.PINK);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (magenta.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.MAGENTA);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}else if (lgray.contains(i)){
-			a.setOpaque(true);
-			a.setBackground(Color.LIGHT_GRAY);
-			a.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		}
-		
-	}
 
 	/**
-	 * 
-	 * @param pnl
-	 * @param symbol
-	 * @param j
-	 * @param atmNo
+	 * Method to add a button of an element for the periodic table.
+	 * @param pnl Panel to which button is to be added.
+	 * @param atmNo The atomic number of the element to be added on the button.
 	 */
-	private void addBtn(JPanel pnl, ArrayList<String> symbol, int j, ArrayList<String> atmNo) {
-		JButton a = new JButton("<html><p align = 'center'>"+symbol.get(j-1)+"<br>"+atmNo.get(j-1)+"</p></html>");
-		pnl.add(a);
-		color(a, j);
-		a.setActionCommand(symbol.get(j-1));
-		a.addActionListener(new HomeView());
+	private void addBtn(JPanel pnl, int atmNo) {
+		JButton btn = new JButton("<html><p align = 'center'>"+symbolList.get(atmNo-1)+"<br>"+atmNumList.get(atmNo-1)+"</p></html>");
+		pnl.add(btn);
+		Controller.getElementColor(btn, atmNo);
+		btn.setActionCommand(symbolList.get(atmNo-1));
+		btn.addActionListener(new HomeView());
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		String action_symbol = e.getActionCommand();
-		Element element_Result = ElementFinder.getElement(action_symbol);
+		Element element_Result = Controller.getElement(action_symbol);
 		ElementView.elementPage(element_Result);
 
 	}

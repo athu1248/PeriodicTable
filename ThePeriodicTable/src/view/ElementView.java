@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import controller.Controller;
 import model.Element;
 
 public class ElementView {
@@ -38,13 +39,8 @@ public class ElementView {
 	static GridBagConstraints gbc = new GridBagConstraints();
 
 	/**
-	 * 
-	 * @param name
-	 * @param symbol
-	 * @param atmNo
-	 * @param massNo
-	 * @param config
-	 * @param fact
+	 * Make a new window with an element's information
+	 * @param element Instance of element of which the specific element's page is to be made
 	 */
 	public static void elementPage(Element element) {
 
@@ -58,8 +54,7 @@ public class ElementView {
 		Font font1 = new Font("Consolas", Font.BOLD, 100);
 		lblElement.setText(element.getSymbol());
 		lblElement.setFont(font1);
-		HomeView h = new HomeView();
-		h.color(lblElement, element.getAtmNo());
+		Controller.getElementColor(lblElement, element.getAtmNo());
 		panel1.add(lblElement, gbc);
 
 		gbc.gridheight = 1;
