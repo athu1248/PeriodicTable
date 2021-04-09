@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"controller"},{"l":"Views"}]
+packageSearchIndex = [{"l":"controller"}]
