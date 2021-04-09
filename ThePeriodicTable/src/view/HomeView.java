@@ -14,6 +14,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -107,9 +108,13 @@ public class HomeView implements ActionListener {
 					matchList.clear();
 					matchList = Controller.getSearchElements(key);
 					comboBox.removeAllItems();
-					comboBox.addItem("Name  " + "  Symbol  " + "  A.No.  " + "  M.No.");
+					comboBox.addItem("Name"+ String.join("", Collections.nCopies(9, " ")) + 
+							"Symbol  " + "  A.No.  " + "  M.No.");
 					for (Element element : matchList) {
-						comboBox.addItem(element.getName() +"   "+ element.getSymbol() +"   "+ element.getAtmNo() +"   "+ element.getMassNo());
+						comboBox.addItem(element.getName() + String.join("", Collections.nCopies((15 - element.getName().length()), " ")) + 
+								element.getSymbol() + String.join("", Collections.nCopies((9 - element.getSymbol().length()), " ")) + 
+								element.getAtmNo() + String.join("", Collections.nCopies((9 - Integer.toString(element.getAtmNo()).length()), " ")) + 
+								element.getMassNo());
 					}
 				}
 			}
@@ -120,6 +125,7 @@ public class HomeView implements ActionListener {
 		gbc.gridx = 2;
 		headingPanel.add(comboBox);
 		comboBox.setPreferredSize(new Dimension(300, 30));
+		comboBox.setFont(new Font("Courier", Font.PLAIN, 12));
 		comboBox.setEditable(false);
 		comboBox.addItemListener(new ItemListener() {
 
